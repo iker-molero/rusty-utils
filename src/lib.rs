@@ -22,12 +22,10 @@
 /// # Returns
 ///
 /// The result of the ternary operation, which is either `if_true` or `if_false`, depending on the condition's result.
-///
 /// 
 /// # Panics
 ///
 /// This function does not panic under normal circumstances.
-///
 /// 
 /// # Examples
 /// In these examples, the `ternary_operator` function is used to make decisions based on different conditions, types, and nesting scenarios.
@@ -105,6 +103,43 @@ pub fn ternary_operator <T> (condition: bool, if_true: T, if_false: T) -> T {
     if condition { if_true } else { if_false }
 }
 
+/// Compacts the standar `string_value.chars().rev().collect()` into a single call, to improve
+/// readability.
+///
+/// # Arguments
+///
+/// - `string_value` - The string to be reversed by the function.
+///
+/// # Returns
+///
+/// The reversed input string.
+///
+/// # Panics
+///
+/// This function does not panic under normal circumstances.
+///
+/// # Examples
+///
+/// - Reversing a input string:
+///
+///      ```rust
+///      use rusty_utils::reverse_string;
+///     
+///      let mut input: &str = "Hello, World";
+///
+///      //It's not necesary to trim the string, since it will work regardless,
+///      //but is more aesthetically pleasing.
+///      let sentence = input.trim();
+///
+///      let reversed_sentence = reverse_string(sentence);
+///      assert_eq!(reversed_sentence, "dlroW ,olleH");
+///      ```
+/// <br>
+
+pub fn reverse_string (string_value: &str) -> String {
+    string_value.chars().rev().collect()
+}
+
 //? ===========
 //? = [Tests] =
 //? ===========
@@ -114,7 +149,6 @@ pub fn ternary_operator <T> (condition: bool, if_true: T, if_false: T) -> T {
 //? -------------------------------
 //? - [Tests] - Ternary operators -
 //? -------------------------------
-
 
 mod ternary_operator_tests {
     use super::*;
@@ -170,3 +204,36 @@ mod ternary_operator_tests {
 
 }
 
+#[cfg(test)]
+
+//? ----------------------------
+//? - [Tests] - Reverse String -
+//? ----------------------------
+
+mod reverse_string_tests {
+    use super::*;
+
+    //Test reversing normal string
+    #[test]
+    fn reverse_string_normal() {
+        let string_to_reverse: &str = "test";
+        let result = reverse_string(string_to_reverse);
+        assert_eq!(result, "tset");
+    }
+
+    //Test reversing string with spaces
+    #[test]
+    fn reverse_string_phrase() {
+        let string_to_reverse: &str = "test phrase";
+        let result = reverse_string(string_to_reverse);
+        assert_eq!(result, "esarhp tset");
+    }
+
+    //Test untrimmed string
+    #[test]
+    fn reverse_string_untrimmed() {
+        let string_to_reverse: &str = " test ";
+        let result = reverse_string(string_to_reverse);
+        assert_eq!(result, " tset ");
+    }
+}
