@@ -140,6 +140,54 @@ pub fn reverse_string (string_value: &str) -> String {
     string_value.chars().rev().collect()
 }
 
+/// Allows the user to concatenate multiple arrays without having to worry about array sizing.
+///
+/// # Arguments
+///
+/// - `arrays` - A vector containing all the arrays to be concatenated.
+/// 
+///      ### Notes
+///     
+///      - The type of the arrays must be the same.
+///     
+///      This function allows you to use any type for the arrays inside the vector used as argument,
+///      but it requires all the arrays to be of the same type.
+///
+/// # Returns
+///
+/// A vector containing all the values in the arrays used as input.
+///
+/// # Panics
+///
+/// This function does not panic under normal circumstances.
+///
+/// # Examples
+///
+/// - Concatenating 2 arrays:
+///
+///      ```rust
+///      use rusty_utils::concat_arrays;
+///     
+///      let users_names_data: [&str; 3] = ["Jack", "John", "Jade"];
+///      let new_users_names_data: [&str; 2] = ["Jake", "Jasmine"];
+///
+///      let total_users_data = concat_arrays(vec![&users_names_data, &new_users_names_data]);
+///
+///      assert_eq!(total_users_data, ["Jack", "John", "Jade", "Jake", "Jasmine"]);
+///      ```
+/// <br>
+
+pub fn concat_arrays <T: Copy> (arrays: Vec<&[T]>) -> Vec<T> {
+    let vector_size: usize = arrays.iter().map(|arr| arr.len()).sum();
+    let mut result_vector: Vec<T> = Vec::with_capacity(vector_size);
+
+    for arr in arrays {
+        result_vector.extend_from_slice(arr);
+    }
+    
+    result_vector
+}
+
 //? ===========
 //? = [Tests] =
 //? ===========
@@ -235,5 +283,35 @@ mod reverse_string_tests {
         let string_to_reverse: &str = " test ";
         let result = reverse_string(string_to_reverse);
         assert_eq!(result, " tset ");
+    }
+}
+
+#[cfg(test)]
+
+//? ---------------------------
+//? - [Tests] - Concat Arrays -
+//? ---------------------------
+
+mod concat_array_tests {
+    use super::*;
+
+    //Test concat arrays with same sizes
+    #[test]
+    fn concat_arrays_same_size() {
+        let arr1: [i32; 3] = [1, 2, 3];
+        let arr2: [i32; 3] = [4, 5, 6];
+
+        let vector_result = concat_arrays(vec![&arr1, &arr2]);
+        assert_eq!(vector_result, [1, 2, 3, 4, 5, 6]);
+    }
+
+    //Test concat arrays with different sizes
+    #[test]
+    fn concat_arrays_different_size() {
+        let arr1: [i32; 2] = [1, 2];
+        let arr2: [i32; 6] = [3, 4, 5, 6, 7, 8];
+
+        let vector_result = concat_arrays(vec![&arr1, &arr2]);
+        assert_eq!(vector_result, [1, 2, 3, 4, 5, 6, 7, 8]);
     }
 }
