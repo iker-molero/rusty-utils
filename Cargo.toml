@@ -2,6 +2,8 @@
 name = "rusty_utils"
 version = "0.1.0"
 edition = "2021"
+description = "A Rust package that provides utility functions inspired by or ported from other programming languages."
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
